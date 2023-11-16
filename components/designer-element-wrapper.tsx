@@ -16,7 +16,7 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
     },
   });
 
-  const { removeElement,selectedElement,setSelectElement} = useDesigner();
+  const { removeElement, setSelectElement } = useDesigner();
   const [mouseHover, setMouseHover] = useState<boolean>(false);
 
   const DesignerElement = FormElements[element.type].designerComponent;
@@ -56,10 +56,10 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
         onMouseLeave={() => {
           setMouseHover(false);
         }}
-        onClick={(e)=>{
-            e.preventDefault();
-            e.stopPropagation();
-            setSelectElement(element);
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setSelectElement(element);
         }}
       >
         <div
@@ -79,8 +79,9 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
                 className="flex justify-center items-center h-full border rounded-md rounded-l-none bg-rose-500"
                 variant={"outline"}
                 onClick={(e) => {
-                    e.stopPropagation();
+                  e.stopPropagation();
                   removeElement(element.id);
+                  setSelectElement(null);
                 }}
               >
                 <BiSolidTrash className="h-6 w-6" />
@@ -94,26 +95,22 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
           </>
         )}
 
-        {
-            topHalf.isOver && (
-                <div className="bg-primary top-0 absolute w-full rounded-md h-1.5 rounded-b-none"/>
-            )
-        }
+        {topHalf.isOver && (
+          <div className="bg-primary top-0 absolute w-full rounded-md h-1.5 rounded-b-none" />
+        )}
 
         <div
           className={cn(
             "w-full h-[120px] flex items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none opacity-100",
-            mouseHover && "opacity-30",
+            mouseHover && "opacity-30"
           )}
         >
           <DesignerElement elementInstance={element} />
         </div>
 
-        {
-            bottomHalf.isOver && (
-                <div className="bg-primary bottom-0 w-full h-1.5 rounded-md rounded-t-none" />
-            )
-        }
+        {bottomHalf.isOver && (
+          <div className="bg-primary bottom-0 w-full h-1.5 rounded-md rounded-t-none" />
+        )}
       </div>
     </>
   );

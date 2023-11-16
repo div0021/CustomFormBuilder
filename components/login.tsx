@@ -9,6 +9,7 @@ import {signIn} from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import { LoginSchema, LoginSchemaType } from "@/lib/types";
+import { FaGoogle } from "react-icons/fa";
 
 
 interface LoginProps {
@@ -39,10 +40,11 @@ const Login:React.FC<LoginProps> = ({handleAuth}) => {
     const onSubmit:SubmitHandler<LoginSchemaType> = (values) => {
        signIn('credentials',{
         ...values,
-        redirect:false
+        redirect:false,
+        callbackUrl:"/"
       }).then((callback)=>{
         if(callback?.ok){
-            router.push("/forms");
+            router.push("/dashboard");
         }
         if(callback?.error){
             toast({
@@ -105,8 +107,12 @@ const Login:React.FC<LoginProps> = ({handleAuth}) => {
                     </div>
 
                     <div className="mt-5 w-full flex justify-center items-center">
-                                <button className="bg-[#660066] px-20 w-full py-3 rounded-xl border-2 border-transparent hover:bg-transparent hover:border-[#660066] tracking-wider transition-all duration-200 ease-in-out">
-                                    Login with Google
+                    <button onClick={()=>signIn("google")} className="bg-[#660066]/70 px-20 w-full py-3 rounded-xl border-2 border-transparent  hover:bg-none hover:bg-transparent hover:border-[#660066]  tracking-wider transition-all duration-200 ease-in-out relative group" type="submit">
+                                    <FaGoogle className="w-5 h-5 text-white absolute top-1/3 left-3 group-hover:left-[15%] sm:group-hover:left-[25%]  opacity-0 group-hover:opacity-100 transition-all duration-200 ease-in-out"/>
+
+                                    <span>
+                                        Login with Google
+                                    </span>
                                 </button>
                             </div>
 

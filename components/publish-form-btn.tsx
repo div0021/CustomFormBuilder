@@ -38,7 +38,7 @@ const PublishFormBtn = ({id}:{id:number}) => {
         
         <AlertDialog>
             <AlertDialogTrigger asChild>
-            <Button className="gap-2 text-white bg-gradient-to-r from-indigo-400 to-cyan-400" variant="outline">
+            <Button className="gap-2 text-white bg-gradient-to-t from-[#d896ff] to-[#660066]" variant="outline">
             <MdOutlinePublish className="w-4 h-4"/>
             Publish
         </Button>
