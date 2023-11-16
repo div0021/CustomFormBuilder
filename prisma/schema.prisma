@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  accounts       Account[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Form {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  createdAt   DateTime @default(now())
+  published   Boolean  @default(false)
+  name        String
+  description String   @default("")
+  content     String   @default("[]")
+
+  visits      Int @default(0)
+  submissions Int @default(0)
+
+  shareURL        String            @unique @default(uuid())
+  formsubmissions FormSubmissions[]
+
+  @@unique([name, userId])
+}
+
+model FormSubmissions {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  formId    Int
+  form      Form     @relation(fields: [formId], references: [id])
+
+  content String
+}
